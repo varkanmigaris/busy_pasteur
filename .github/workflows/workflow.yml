@@ -12,14 +12,20 @@ jobs:
     #     config: kind-config.yaml
     - name: Setup Kind
       run: |
+        whoami 
+        sudo echo hello
+        cat /etc/passwd
         kind create cluster --config=kind-config.yaml
-    - name: Install Nginx Ingress Controller 
+    - name: Install Knative Serving
       run: |
-        kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/kind/deploy.yaml
-        kubectl wait --namespace ingress-nginx \
-          --for=condition=ready pod \
-          --selector=app.kubernetes.io/component=controller \
-          --timeout=90s
+        kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-crds.yaml
+        kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-core.yaml
+    - name: Install Knative Istio
+      run: |
+        ISTIO_VERSION=1.7.0 curl -sL https://istio.io/downloadIstio | sh -
+        sudo install istio-1.7.0/bin/istioctl /usr/bin/istioctl
+        istioctl install -f istio-minimal-operator.yaml
+        kubectl apply --filename https://github.com/knative/net-istio/releases/download/v0.17.0/release.yaml
     - name: Test Ingress
       run: |
         kubectl apply -f test-ingress.yaml
