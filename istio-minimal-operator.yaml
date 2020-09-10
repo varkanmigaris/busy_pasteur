@@ -22,11 +22,9 @@ spec:
   components:
     pilot:
       k8s:
-        replicaCount: 1
         resources:
           requests:
             cpu: 100m
-            memory: 256Mi
     ingressGateways:
     - name: istio-ingressgateway
       enabled: true
