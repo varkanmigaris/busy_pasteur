@@ -13,20 +13,20 @@ jobs:
     - name: Setup Kind
       run: |
         kind create cluster --config=kind-config.yaml
-    - name: Install Knative Serving
-      run: |
-        kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-crds.yaml
-        kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-core.yaml
+    # - name: Install Knative Serving
+    #   run: |
+    #     kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-crds.yaml
+    #     kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-core.yaml
     - name: Install Knative Istio
       run: |
         curl -sL https://istio.io/downloadIstio | ISTIO_VERSION=1.7.0 sh -
-        install istio-1.7.0/bin/istioctl /usr/bin/istioctl
+        sudo install istio-1.7.0/bin/istioctl /usr/bin/istioctl
         istioctl install -f istio-minimal-operator.yaml
-        kubectl apply --filename https://github.com/knative/net-istio/releases/download/v0.17.0/release.yaml
-        kubectl patch configmap/config-domain \
-          --namespace knative-serving \
-          --type merge \
-          --patch '{"data":{"127.0.0.1.xip.io":""}}'
+        # kubectl apply --filename https://github.com/knative/net-istio/releases/download/v0.17.0/release.yaml
+        # kubectl patch configmap/config-domain \
+        #   --namespace knative-serving \
+        #   --type merge \
+        #   --patch '{"data":{"127.0.0.1.xip.io":""}}'
     - name: Test Ingress
       run: |
         kubectl apply -f test-ingress.yaml
