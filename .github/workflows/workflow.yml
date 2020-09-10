@@ -6,39 +6,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - uses: opsgang/ga-setup-minikube@v0.1.1
+    - uses: engineerd/setup-kind@v0.4.0
       with:
-        minikube-version: 1.4.0
-        k8s-version: 1.15.1
-    - name: Testing
+        version: "v0.8.1"
+        config: kind-config.yaml
+    - name: Install Nginx Ingress Controller 
       run: |
-        minikube config set vm-driver docker
-        minikube config set kubernetes-version v1.15.1
-        minikube start
-        minikube update-context
-        kubectl cluster-info
-        kubectl get pods -n kube-system    
-        
-    # - uses: engineerd/setup-kind@v0.4.0
-    #   with:
-    #     version: "v0.8.1"
-    #     config: kind-config.yaml
-    # - name: Install Nginx Ingress Controller 
-    #   run: |
-    #     kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/kind/deploy.yaml
-    #     kubectl config set-context $(kubectl config current-context) --namespace=ingress-nginx
-    #     sleep 15
-    #     kubectl get pods
-    #     sleep 60
-    #     kubectl get pods
-    #     POD=$(kubectl get pod -l app.kubernetes.io/name=ingress-nginx -o jsonpath={.items[0].metadata.name})
-    #     kubectl describe pod $POD
-    #     kubectl wait --namespace ingress-nginx \
-    #       --for=condition=ready pod \
-    #       --selector=app.kubernetes.io/component=controller \
-    #       --timeout=90s
-    # - name: Test Ingress
-    #   run: |
-    #     kubectl apply -f test-ingress.yaml
-    #     curl localhost/foo
-    #     curl localhost/bar
+        kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/kind/deploy.yaml
+        kubectl config set-context $(kubectl config current-context) --namespace=ingress-nginx
+        sleep 15
+        kubectl get pods
+        sleep 60
+        kubectl get pods
+        POD=$(kubectl get pod -l app.kubernetes.io/name=ingress-nginx,app.kubernetes.io/component=controller -o jsonpath={.items[0].metadata.name})
+        kubectl describe pod $POD
+        kubectl wait --namespace ingress-nginx \
+          --for=condition=ready pod \
+          --selector=app.kubernetes.io/component=controller \
+          --timeout=90s
+    - name: Test Ingress
+      run: |
+        kubectl apply -f test-ingress.yaml
+        curl localhost/foo
+        curl localhost/bar
