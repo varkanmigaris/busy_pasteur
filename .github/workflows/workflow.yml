@@ -17,6 +17,12 @@ jobs:
     #   run: |
     #     kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-crds.yaml
     #     kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-core.yaml
+    
+    - name: Install Knative serving
+      run: |
+        kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-crds.yaml
+        kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-core.yaml
+
     - name: Install Knative Istio
       run: |
         curl -sL https://istio.io/downloadIstio | ISTIO_VERSION=1.7.0 sh -
@@ -27,10 +33,6 @@ jobs:
         #   --namespace knative-serving \
         #   --type merge \
         #   --patch '{"data":{"127.0.0.1.xip.io":""}}'
-    - name: Install Knative serving
-      run: |
-        kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-crds.yaml
-        kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-core.yaml
     # - name: Test Ingress
     #   run: |
     #     kubectl apply -f test-ingress.yaml
