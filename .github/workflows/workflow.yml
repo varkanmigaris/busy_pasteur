@@ -27,12 +27,16 @@ jobs:
         #   --namespace knative-serving \
         #   --type merge \
         #   --patch '{"data":{"127.0.0.1.xip.io":""}}'
-    - name: Test Ingress
+    - name: Install Knative serving
       run: |
-        kubectl apply -f test-ingress.yaml
-        sleep 5
-        kubectl get all,ingress
-        sleep 30
-        kubectl get all,ingress
-        curl localhost/foo
-        curl localhost/bar
+        kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-crds.yaml
+        kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-core.yaml
+    # - name: Test Ingress
+    #   run: |
+    #     kubectl apply -f test-ingress.yaml
+    #     sleep 5
+    #     kubectl get all,ingress
+    #     sleep 30
+    #     kubectl get all,ingress
+    #     curl localhost/foo
+    #     curl localhost/bar
