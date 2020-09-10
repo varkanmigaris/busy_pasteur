@@ -6,10 +6,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - uses: engineerd/setup-kind@v0.4.0
-      with:
-        version: "v0.8.1"
-        config: kind-config.yaml
+    # - uses: engineerd/setup-kind@v0.4.0
+    #   with:
+    #     version: "v0.8.1"
+    #     config: kind-config.yaml
+    - name: Setup Kind
+      run: |
+        kind create cluster --config=kind-config.yaml
     - name: Install Nginx Ingress Controller 
       run: |
         kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/kind/deploy.yaml
