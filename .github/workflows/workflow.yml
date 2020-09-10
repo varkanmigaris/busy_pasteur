@@ -6,18 +6,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: Test Minikube
+    - uses: opsgang/ga-setup-minikube@v0.1.1
+      with:
+        minikube-version: 1.4.0
+        k8s-version: 1.15.1
+    - name: Testing
       run: |
-        kubectl config view
-        kubectl apply -f https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/controllers/nginx-deployment.yaml
-        sleep 5
-        kubectl get pods
-        kubectl wait \
-          --for=condition=ready pod \
-          --selector=app=nginx \
-          --timeout=90s
-        kubectl get all
-        minikube proxy        
+        minikube config set vm-driver docker
+        minikube config set kubernetes-version v1.15.1
+        minikube start
+        minikube update-context
+        kubectl cluster-info
+        kubectl get pods -n kube-system    
         
     # - uses: engineerd/setup-kind@v0.4.0
     #   with:
