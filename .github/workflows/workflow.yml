@@ -30,5 +30,9 @@ jobs:
     - name: Test Ingress
       run: |
         kubectl apply -f test-ingress.yaml
+        sleep 5
+        kubectl get all,ingress
+        sleep 30
+        kubectl get all,ingress
         curl localhost/foo
         curl localhost/bar
