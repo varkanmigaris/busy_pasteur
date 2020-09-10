@@ -20,6 +20,12 @@ spec:
       enabled: false
 
   components:
+    pilot:
+      k8s:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
     ingressGateways:
     - name: istio-ingressgateway
       enabled: true
