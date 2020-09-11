@@ -32,7 +32,7 @@ jobs:
 
     - name: Test Knative Service with Istio
       run: |
-        sleep 30
+        sleep 60
         kubectl apply -f deploy-knative-services/
         sleep 15
         kubectl wait --for=condition=Ready --timeout=90s service.serving.knative.dev/foo
