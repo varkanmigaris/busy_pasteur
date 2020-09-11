@@ -48,10 +48,10 @@ jobs:
         kubectl logs $POD -c queue-proxy
 
         sleep 15
-        kubectl get pod,kservice,revision,podautoscaler,virtualservice,gateway
+        kubectl get pod,kservice,revision,podautoscaler,deployment,virtualservice,gateway
 
         sleep 15
-        kubectl get pod,kservice,revision,podautoscaler,virtualservice,gateway
+        kubectl get pod,kservice,revision,podautoscaler,deployment
 
         docker ps
         curl -D - -s http://foo.default.127.0.0.1.xip.io
@@ -59,15 +59,23 @@ jobs:
 
         sleep 30
         echo ">>>>>>>>>>>> 1 <<<<<<<<<<<"
-        kubectl get pod
+        kubectl get pod,kservice,revision,podautoscaler,deployment
 
         sleep 30
         echo ">>>>>>>>>>>> 2 <<<<<<<<<<<"
-        kubectl get pod
+        kubectl get pod,kservice,revision,podautoscaler,deployment
 
         sleep 30
         echo ">>>>>>>>>>>> 3 <<<<<<<<<<<"
-        kubectl get pod
+        kubectl get pod,kservice,revision,podautoscaler,deployment
+
+        sleep 30
+        echo ">>>>>>>>>>>> 4 <<<<<<<<<<<"
+        kubectl get pod,kservice,revision,podautoscaler,deployment
+
+        sleep 30
+        echo ">>>>>>>>>>>> 5 <<<<<<<<<<<"
+        kubectl get pod,kservice,revision,podautoscaler,deployment
     - name: Kube Node Status
       run: kubectl describe nodes
     # - name: Test Ingress
