@@ -43,8 +43,8 @@ jobs:
 
         kubectl get pod,kservice,revision,virtualservice
 
-        curl -D - -s http://bar.default.127.0.0.1.xip.io
-        curl -D - -s http://foo.default.127.0.0.1.xip.io
+        curl -v http://bar.default.127.0.0.1.xip.io
+        curl http://foo.default.127.0.0.1.xip.io
     - name: Kube Node Status
       run: kubectl describe nodes
     # - name: Test Ingress
