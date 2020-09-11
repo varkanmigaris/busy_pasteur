@@ -42,7 +42,7 @@ jobs:
         kubectl wait --for=condition=Ready --timeout=300s service.serving.knative.dev/foo
         kubectl wait --for=condition=Ready --timeout=300s service.serving.knative.dev/bar
         sleep 15
-        kubectl get pod,kservice,revision,virtualservice
+        kubectl get pod,kservice,revision,virtualservice,gateway
 
         curl http://foo.default.127.0.0.1.xip.io
         curl -v http://bar.default.127.0.0.1.xip.io
