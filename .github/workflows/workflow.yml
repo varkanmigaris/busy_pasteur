@@ -27,19 +27,12 @@ jobs:
       run: |
         curl -sL https://istio.io/downloadIstio | ISTIO_VERSION=1.7.0 sh -
         sudo install istio-1.7.0/bin/istioctl /usr/bin/istioctl
-        istioctl install -f istio-minimal-operator.yaml &
-        kubectl config set-context $(kubectl config current-context) --namespace istio-system
-        for i in {1..10}; do sleep 15; kubectl -n istio-system get pods; done
-        kubectl describe nodes
-        # POD=$(kubectl get pod -l app=istiod --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[1].metadata.name}')
-        # echo $POD
-        # kubectl describe pod $POD
-        # kubectl describe nodes
-        # kubectl apply --filename https://github.com/knative/net-istio/releases/download/v0.17.0/release.yaml
-        # kubectl patch configmap/config-domain \
-        #   --namespace knative-serving \
-        #   --type merge \
-        #   --patch '{"data":{"127.0.0.1.xip.io":""}}'
+        istioctl install -f istio-minimal-operator.yaml 
+        kubectl apply --filename https://github.com/knative/net-istio/releases/download/v0.17.0/release.yaml
+        kubectl patch configmap/config-domain \
+          --namespace knative-serving \
+          --type merge \
+          --patch '{"data":{"127.0.0.1.xip.io":""}}'
     # - name: Test Ingress
     #   run: |
     #     kubectl apply -f test-ingress.yaml
