@@ -15,7 +15,7 @@ spec:
     pilot:
       resources: 
         requests: 
-          cpu: 100m
+          cpu: 200m
 
   addonComponents:
     pilot:
