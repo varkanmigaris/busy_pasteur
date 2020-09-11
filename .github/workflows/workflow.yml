@@ -33,6 +33,10 @@ jobs:
           --namespace knative-serving \
           --type merge \
           --patch '{"data":{"127.0.0.1.xip.io":""}}'
+    - name: Kubernetes Node Status
+      run: kubectl describe nodes
+    - name: Test Knative Service with Istio
+      run: 
     # - name: Test Ingress
     #   run: |
     #     kubectl apply -f test-ingress.yaml
