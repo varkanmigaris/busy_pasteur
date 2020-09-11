@@ -57,7 +57,16 @@ jobs:
         curl -D - -s http://foo.default.127.0.0.1.xip.io
         curl -D - -s http://bar.default.127.0.0.1.xip.io
 
-        sleep 10
+        sleep 30
+        echo ">>>>>>>>>>>> 1 <<<<<<<<<<<"
+        kubectl get pod
+
+        sleep 30
+        echo ">>>>>>>>>>>> 2 <<<<<<<<<<<"
+        kubectl get pod
+
+        sleep 30
+        echo ">>>>>>>>>>>> 3 <<<<<<<<<<<"
         kubectl get pod
     - name: Kube Node Status
       run: kubectl describe nodes
