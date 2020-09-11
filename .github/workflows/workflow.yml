@@ -34,22 +34,26 @@ jobs:
       run: |
         sleep 60
         kubectl apply -f deploy-knative-services/
-        sleep 15
         kubectl wait --for=condition=Ready --timeout=90s service.serving.knative.dev/foo
         
-        POD=$(kubectl get pod -l serving.knative.dev/service=foo --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[0].metadata.name}')
-        kubectl describe pod $POD
-        kubectl get pod $POD -o yaml
-        kubectl logs $POD -c user-container
-        kubectl logs $POD -c queue-proxy
+        # POD=$(kubectl get pod -l serving.knative.dev/service=foo --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[0].metadata.name}')
+        # kubectl describe pod $POD
+        # kubectl get pod $POD -o yaml
+        # kubectl logs $POD -c user-container
+        # kubectl logs $POD -c queue-proxy
 
-        sleep 15
-        kubectl get pod,kservice,revision,podautoscaler,deployment,virtualservice,gateway
+        # sleep 15
+        # kubectl get pod,kservice,revision,podautoscaler,deployment,virtualservice,gateway
 
-        sleep 15
-        kubectl get pod,kservice,revision,podautoscaler,deployment
+        # sleep 15
+        # kubectl get pod,kservice,revision,podautoscaler,deployment
 
         curl -D - -s http://foo.default.127.0.0.1.xip.io
+        curl -D - -s http://bar.default.127.0.0.1.xip.io
+
+        kubectl get pod,kservice,revision,podautoscaler,deployment
+
+        echo -e "\033[1;32m====================================\033[0m"
 
         POD=$(kubectl get pod -l serving.knative.dev/service=foo --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[0].metadata.name}')
         kubectl describe pod $POD 
