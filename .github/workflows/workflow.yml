@@ -55,6 +55,7 @@ jobs:
         kubectl describe pod $POD
         kubectl get pod $POD -o yaml
 
+        echo Sleeping for 240s
         sleep 240
         kubectl get pod,revision
 
