@@ -41,6 +41,10 @@ jobs:
         sleep 15
         kubectl wait --for=condition=Ready --timeout=300s service.serving.knative.dev/foo
         kubectl wait --for=condition=Ready --timeout=300s service.serving.knative.dev/bar
+        
+        POD=$(kubectl get pod -l serving.knative.dev/service=foo --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[0].metadata.name}')
+        kubectl describe pod $POD
+
         sleep 15
         kubectl get pod,kservice,revision,virtualservice,gateway
 
