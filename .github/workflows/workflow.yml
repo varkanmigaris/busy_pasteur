@@ -36,7 +36,17 @@ jobs:
     - name: Kubernetes Node Status
       run: kubectl describe nodes
     - name: Test Knative Service with Istio
-      run: 
+      run: |
+        kubectl apply -f deploy-knative-services/
+        kubectl wait --for=condition=Ready --timeout=300s service.serving.knative.dev/foo
+        kubectl wait --for=condition=Ready --timeout=300s service.serving.knative.dev/bar
+
+        kubectl get pod,kservice,revision,virtualservice
+
+        curl -D - -s http://bar.default.127.0.0.1.xip.io
+        curl -D - -s http://foo.default.127.0.0.1.xip.io
+    - name: Kube Node Status
+      run: kubectl describe nodes
     # - name: Test Ingress
     #   run: |
     #     kubectl apply -f test-ingress.yaml
