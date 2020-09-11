@@ -52,7 +52,7 @@ jobs:
         curl -D - -s http://foo.default.127.0.0.1.xip.io
 
         POD=$(kubectl get pod -l serving.knative.dev/service=foo --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[0].metadata.name}')
-        kubectl describe pod $POD
+        kubectl describe pod $POD 
         kubectl get pod $POD -o yaml
 
         echo Sleeping for 240s
