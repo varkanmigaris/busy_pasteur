@@ -23,6 +23,9 @@ jobs:
         kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-crds.yaml
         kubectl apply --filename knative-serving-core.yaml
 
+        sleep 60
+        kubectl -n knative-serving get all
+
     - name: Install Knative Istio
       run: |
         curl -sL https://istio.io/downloadIstio | ISTIO_VERSION=1.7.0 sh -
