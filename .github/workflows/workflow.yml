@@ -32,7 +32,7 @@ jobs:
         kubectl patch configmap/config-domain \
           --namespace knative-serving \
           --type merge \
-          --patch '{"data":{"127.0.0.1.xip.io":""}}'
+          --patch '{"data":{"local.pempek.us":""}}'
     - name: Kubernetes Node Status
       run: kubectl describe nodes
     - name: Test Knative Service with Istio
@@ -51,8 +51,9 @@ jobs:
         sleep 15
         kubectl get pod,kservice,revision,virtualservice,gateway
 
-        curl http://foo.default.127.0.0.1.xip.io
-        curl -v http://bar.default.127.0.0.1.xip.io
+        docker ps
+        curl http://foo.default.local.pempek.us
+        curl -v http://bar.default.local.pempek.us
     - name: Kube Node Status
       run: kubectl describe nodes
     # - name: Test Ingress
