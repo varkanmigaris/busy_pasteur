@@ -6,17 +6,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    # - uses: engineerd/setup-kind@v0.4.0
-    #   with:
-    #     version: "v0.8.1"
-    #     config: kind-config.yaml
+
     - name: Setup Kind
       run: |
         kind create cluster --config=kind-config.yaml
-    # - name: Install Knative Serving
-    #   run: |
-    #     kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-crds.yaml
-    #     kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-core.yaml
     
     - name: Install Knative serving
       run: |
@@ -33,6 +26,7 @@ jobs:
           --namespace knative-serving \
           --type merge \
           --patch '{"data":{"127.0.0.1.xip.io":""}}'
+
     - name: Kubernetes Node Status
       run: kubectl describe nodes
     - name: Test Knative Service with Istio
@@ -40,7 +34,6 @@ jobs:
         kubectl apply -f deploy-knative-services/
         sleep 15
         kubectl wait --for=condition=Ready --timeout=90s service.serving.knative.dev/foo
-        kubectl wait --for=condition=Ready --timeout=90s service.serving.knative.dev/bar
         
         POD=$(kubectl get pod -l serving.knative.dev/service=foo --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[0].metadata.name}')
         kubectl describe pod $POD
