@@ -48,10 +48,10 @@ jobs:
         kubectl logs $POD -c queue-proxy
 
         sleep 15
-        kubectl get pod,kservice,revision,virtualservice,gateway
+        kubectl get pod,kservice,revision,podautoscaler,virtualservice,gateway
 
         sleep 15
-        kubectl get pod,kservice,revision,virtualservice,gateway
+        kubectl get pod,kservice,revision,podautoscaler,virtualservice,gateway
 
         docker ps
         curl -D - -s http://foo.default.127.0.0.1.xip.io
