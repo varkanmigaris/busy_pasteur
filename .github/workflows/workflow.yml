@@ -23,9 +23,6 @@ jobs:
         kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-crds.yaml
         kubectl apply --filename knative-serving-core.yaml
 
-        sleep 60
-        kubectl -n knative-serving get all
-
     - name: Install Knative Istio
       run: |
         curl -sL https://istio.io/downloadIstio | ISTIO_VERSION=1.7.0 sh -
@@ -81,7 +78,7 @@ jobs:
         kubectl get pod,kservice,revision,podautoscaler,deployment
 
         POD=$(kubectl get pod -l serving.knative.dev/service=foo --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[0].metadata.name}')
-        kubectl desribe pod $POD
+        kubectl describe pod $POD
     - name: Kube Node Status
       run: kubectl describe nodes
     # - name: Test Ingress
