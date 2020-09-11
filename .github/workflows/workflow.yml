@@ -49,13 +49,15 @@ jobs:
         sleep 15
         kubectl get pod,kservice,revision,podautoscaler,deployment
 
-        docker ps
         curl -D - -s http://foo.default.127.0.0.1.xip.io
 
-   
         POD=$(kubectl get pod -l serving.knative.dev/service=foo --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[0].metadata.name}')
         kubectl describe pod $POD
         kubectl get pod $POD -o yaml
+
+        sleep 240
+        kubectl get pod,revision
+
 
     - name: Kube Node Status
       run: kubectl describe nodes
