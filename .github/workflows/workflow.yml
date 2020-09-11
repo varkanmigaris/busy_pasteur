@@ -21,7 +21,7 @@ jobs:
     - name: Install Knative serving
       run: |
         kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-crds.yaml
-        kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/serving-core.yaml
+        kubectl apply --filename knative-serving-core.yaml
 
     - name: Install Knative Istio
       run: |
@@ -30,9 +30,10 @@ jobs:
         istioctl install -f istio-minimal-operator.yaml &
         kubectl config set-context $(kubectl config current-context) --namespace istio-system
         for i in {1..10}; do sleep 15; kubectl -n istio-system get pods; done
-        POD=$(kubectl get pod -l app=istiod --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[1].metadata.name}')
-        echo $POD
-        kubectl describe pod $POD
+        kubectl describe nodes
+        # POD=$(kubectl get pod -l app=istiod --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[1].metadata.name}')
+        # echo $POD
+        # kubectl describe pod $POD
         # kubectl describe nodes
         # kubectl apply --filename https://github.com/knative/net-istio/releases/download/v0.17.0/release.yaml
         # kubectl patch configmap/config-domain \
