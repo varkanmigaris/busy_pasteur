@@ -54,5 +54,5 @@ jobs:
         kubectl get kservice
         kubectl get virtualservice
 
-        curl http://foo.default.127.0.0.1.xip.io
-        curl http://bar.default.127.0.0.1.xip.io
+        curl -D - -s http://foo.default.127.0.0.1.xip.io
+        curl -D - -s http://bar.default.127.0.0.1.xip.io
