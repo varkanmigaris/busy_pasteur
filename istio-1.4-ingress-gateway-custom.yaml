@@ -1,0 +1,13 @@
+apiVersion: install.istio.io/v1alpha2
+kind: IstioControlPlane
+spec:
+  gateways:
+    components:
+      ingressGateway:
+        k8s:
+          overlays:
+          - kind: Deployment
+            name: istio-ingressgateway
+            patches:
+            - path: spec.template.spec.containers.[name:istio-proxy].ports.[containerPort:80].hostPort
+              value: 80
