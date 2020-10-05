@@ -6,20 +6,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+    
+    - name: Install kubectl 1.17
+      run: |
+        curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.17.12/bin/linux/amd64/kubectl"
+        sudo install ./kubectl /usr/bin/kubectl
 
     - name: Create Kind cluster
       run: |
+        kind version 
         kind create cluster --config=kind-config.yaml --wait 5m
+        kubectl version
     
     - name: Install Istio
-      env:
-        TERM: xterm
       run: |
         curl -sL https://istio.io/downloadIstio | ISTIO_VERSION=1.4.10 sh -
         export PATH=$PWD/istio-1.4.10/bin:$PATH
         istioctl manifest apply -f istio-1.4-ingress-gateway-custom.yaml
-        # kubectl -n istio-system wait --for=condition=Ready --timeout=5m pod -l app=pilot
-        timeout 600 watch -n 10 kubectl -n istio-system get pods
+        kubectl -n istio-system wait --for=condition=Ready --timeout=5m pod -l app=pilot
 
     - name: Install Knative
       run: |
@@ -37,11 +41,18 @@ jobs:
           --type merge \
           --patch '{"data":{"127.0.0.1.xip.io":""}}'
 
+        sleep 15
+
     - name: Test Installation
       run: |
         kubectl apply -f deploy-knative-services/
         kubectl wait --for=condition=Ready --timeout=3m service.serving.knative.dev/foo
         kubectl wait --for=condition=Ready --timeout=3m service.serving.knative.dev/bar
 
-        curl -D - -s http://foo.default.127.0.0.1.xip.io
-        curl -D - -s http://bar.default.127.0.0.1.xip.io
+        sleep 10 
+        kubectl get pods
+        kubectl get kservice
+        kubectl get virtualservice
+
+        curl http://foo.default.127.0.0.1.xip.io
+        curl http://bar.default.127.0.0.1.xip.io
