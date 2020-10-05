@@ -12,11 +12,14 @@ jobs:
         kind create cluster --config=kind-config.yaml --wait 5m
     
     - name: Install Istio
+      env:
+        TERM: xterm
       run: |
         curl -sL https://istio.io/downloadIstio | ISTIO_VERSION=1.4.10 sh -
         export PATH=$PWD/istio-1.4.10/bin:$PATH
         istioctl manifest apply -f istio-1.4-ingress-gateway-custom.yaml
-        kubectl -n istio-system wait --for=condition=Ready --timeout=5m pod -l app=pilot
+        # kubectl -n istio-system wait --for=condition=Ready --timeout=5m pod -l app=pilot
+        timeout 600 watch -n 10 kubectl -n istio-system get pods
 
     - name: Install Knative
       run: |
