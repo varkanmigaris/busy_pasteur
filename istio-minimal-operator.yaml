@@ -11,7 +11,7 @@ spec:
       jwtPolicy: first-party-jwt
     gateways:
       istio-ingressgateway:
-        runAsRoot: true
+        runAsRoot: true  
     pilot:
       resources: 
         requests: 
